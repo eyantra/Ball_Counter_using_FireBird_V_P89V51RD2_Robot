@@ -1,0 +1,64 @@
+C51 COMPILER V8.08   MAIN                                                                  09/22/2010 18:45:51 PAGE 1   
+
+
+C51 COMPILER V8.08, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<intrins.h>
+   2          #include"p89v51rx2.h"
+   3          #include"lcd.h"
+   4          
+   5          sbit touch_sensor=P1^7; //Touch Sensor connected to Pin 1.7
+   6          
+   7          void counter_display(unsigned char number)
+   8          {
+   9   1       unsigned char temp;
+  10   1       temp=number/10;
+  11   1       LCD_CMD(0xC7);
+  12   1       LCD_CHAR(temp+48);
+  13   1       temp=number%10;
+  14   1       LCD_CMD(0xC8);
+  15   1       LCD_CHAR(temp+48);
+  16   1      }
+  17          
+  18          void main(void)
+  19          {
+  20   1       unsigned char count=0; // Counter variable
+  21   1       LCD_INIT();
+  22   1       LCD_CMD(LINE1);
+  23   1       LCD_WRITE("**BALL-COUNTER**");
+  24   1       LCD_CMD(DON_COFF);
+  25   1       counter_display(count);
+  26   1      
+  27   1       while(1)
+  28   1       {
+  29   2               if(touch_sensor==0)//If Touch detected
+  30   2               {
+  31   3               count++;  //Counter incremented
+  32   3               counter_display(count); //Display Number
+  33   3               buzzer=0;      //Buzzer ON
+  34   3               delay_ms(1000); //Delay for correction if any
+  35   3               }
+  36   2               else
+  37   2               {
+  38   3                buzzer=1;     //Buzzer OFF
+  39   3               }
+  40   2       } 
+  41   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    280    ----
+   CONSTANT SIZE    =     17    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
